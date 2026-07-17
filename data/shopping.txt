@@ -1,0 +1,31 @@
+# Question|Suggested answer
+Gehst du gern einkaufen?|Ja, besonders auf dem Markt.
+Was kaufst du jede Woche?|Ich kaufe Brot, Milch und Obst.
+Wo kaufst du Lebensmittel?|Ich kaufe sie im Supermarkt.
+Was kostet ein Brot ungefähr?|Es kostet ungefähr drei Euro.
+Wie fragst du nach dem Preis?|Wie viel kostet das?
+Was möchtest du heute kaufen?|Ich möchte neue Schuhe kaufen.
+Welche Kleidergröße hast du?|Ich habe Größe M.
+Welche Farbe trägst du gern?|Ich trage gern Blau.
+Probierst du Kleidung vor dem Kauf an?|Ja, ich probiere sie immer an.
+Wie bezahlst du lieber?|Ich bezahle lieber mit Karte.
+Was steht auf deiner Einkaufsliste?|Obst, Gemüse und Käse stehen darauf.
+Kaufst du gern online ein?|Ja, manchmal kaufe ich online ein.
+Was war dein letzter Einkauf?|Ich habe eine Jacke gekauft.
+Was ist dir beim Einkaufen wichtig?|Gute Qualität ist mir wichtig.
+Vergleichst du Preise?|Ja, ich vergleiche oft die Preise.
+Was kaufst du nie?|Ich kaufe nie sehr teure Kleidung.
+Welche Geschäfte besuchst du oft?|Ich besuche oft den Supermarkt.
+Was sagst du an der Kasse?|Ich möchte mit Karte bezahlen.
+Brauchst du eine Tüte?|Nein danke, ich habe eine Tasche.
+Wie fragst du nach einer anderen Größe?|Haben Sie das auch in Größe M?
+Wie fragst du nach einer anderen Farbe?|Haben Sie das auch in Blau?
+Was kaufst du als Geschenk?|Ich kaufe ein Buch als Geschenk.
+Für wen kaufst du gern Geschenke?|Ich kaufe gern Geschenke für meine Tochter.
+Was hast du zuletzt im Angebot gekauft?|Ich habe Kaffee im Angebot gekauft.
+Was ist besser: billig oder langlebig?|Langlebig ist meistens besser.
+Kaufst du spontan oder nach Plan?|Ich kaufe meistens nach Plan.
+Was würdest du mit hundert Euro kaufen?|Ich würde Bücher und Essen kaufen.
+Was kann man auf einem Markt kaufen?|Man kann Obst, Gemüse und Käse kaufen.
+Warum ist eine Einkaufsliste hilfreich?|Man vergisst weniger und kauft gezielter.
+Beschreibe dein Lieblingsgeschäft.|Es ist groß, ordentlich und günstig.
