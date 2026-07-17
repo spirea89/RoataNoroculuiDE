@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Roata Norocului DE</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Roata Norocului DE home">
+        <span class="brand-mark">DE</span>
+        <span>Roata Norocului</span>
+      </a>
+      <nav class="nav">
+        <a aria-current="page" href="index.html">Game</a>
+        <a href="config.html">Configure</a>
+      </nav>
+    </header>
+
+    <main class="game-shell">
+      <section class="stage" aria-labelledby="game-title">
+        <div class="stage-copy">
+          <p class="eyebrow">German practice wheel</p>
+          <h1 id="game-title">Spin, answer, score, repeat.</h1>
+        </div>
+
+        <div class="wheel-layout">
+          <div class="wheel-wrap" aria-live="polite">
+            <div class="pointer" aria-hidden="true"></div>
+            <div id="wheel" class="wheel" role="img" aria-label="Spinning category wheel">
+              <div class="wheel-center">
+                <button id="spinButton" class="primary-action" type="button">Start</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="play-panel" aria-label="Game controls">
+            <div class="setup-grid">
+              <label>
+                Players
+                <textarea id="playersInput" rows="4" spellcheck="false">Player 1
+Player 2</textarea>
+              </label>
+              <label>
+                Rounds
+                <select id="roundLimit">
+                  <option value="10">10 rounds</option>
+                  <option value="20">20 rounds</option>
+                  <option value="30">30 rounds</option>
+                </select>
+              </label>
+            </div>
+            <div class="button-row">
+              <button id="newGameButton" class="secondary-action" type="button">New Game</button>
+              <button id="resetScoresButton" class="ghost-action" type="button">Reset Scores</button>
+            </div>
+
+            <div class="status-strip">
+              <div>
+                <span>Turn</span>
+                <strong id="turnLabel">-</strong>
+              </div>
+              <div>
+                <span>Round</span>
+                <strong id="roundLabel">0 / 10</strong>
+              </div>
+            </div>
+
+            <section class="question-box" aria-labelledby="question-title">
+              <p id="categoryLabel" class="category-pill">Spin to choose</p>
+              <h2 id="question-title">Question</h2>
+              <p id="questionText">Add players, choose the round count, then press Start.</p>
+              <p id="answerText" class="answer-text"></p>
+            </section>
+
+            <section aria-labelledby="score-title">
+              <h2 id="score-title" class="compact-title">Score this answer</h2>
+              <div class="score-buttons">
+                <button type="button" data-points="0">0</button>
+                <button type="button" data-points="10">10</button>
+                <button type="button" data-points="30">30</button>
+                <button type="button" data-points="45">45</button>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="scoreboard-section" aria-labelledby="leaderboard-title">
+        <h2 id="leaderboard-title">Players</h2>
+        <div id="scoreboard" class="scoreboard"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

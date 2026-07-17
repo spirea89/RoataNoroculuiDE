@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configure | Roata Norocului DE</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Roata Norocului DE home">
+        <span class="brand-mark">DE</span>
+        <span>Roata Norocului</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Game</a>
+        <a aria-current="page" href="config.html">Configure</a>
+      </nav>
+    </header>
+
+    <main class="config-shell">
+      <section class="config-heading">
+        <p class="eyebrow">Content editor</p>
+        <h1>Configure categories and German questions.</h1>
+      </section>
+
+      <section class="editor-grid">
+        <div class="editor-panel">
+          <div class="panel-heading">
+            <h2>Categories</h2>
+            <button id="addCategoryButton" class="secondary-action" type="button">Add Category</button>
+          </div>
+          <div class="field-row-head" aria-hidden="true">
+            <span>ID</span>
+            <span>Wheel label</span>
+            <span>Question file</span>
+          </div>
+          <div id="categoryRows" class="category-rows"></div>
+          <div class="button-row">
+            <button id="downloadCategoriesButton" class="primary-action compact" type="button">Download categories.txt</button>
+          </div>
+        </div>
+
+        <div class="editor-panel">
+          <div class="panel-heading">
+            <h2>Questions</h2>
+            <select id="questionFileSelect" aria-label="Question file"></select>
+          </div>
+          <label>
+            Questions and suggested answers
+            <textarea id="questionsEditor" class="questions-editor" spellcheck="false"></textarea>
+          </label>
+          <div class="button-row">
+            <button id="downloadQuestionsButton" class="primary-action compact" type="button">Download question file</button>
+            <button id="reloadButton" class="ghost-action" type="button">Reload from txt</button>
+          </div>
+          <p class="note">Static GitHub Pages cannot save into the repository directly. Download the changed txt file, replace it in `data/`, commit, and GitHub Pages will serve it.</p>
+        </div>
+      </section>
+
+      <section class="format-panel">
+        <h2>Text file format</h2>
+        <div class="format-grid">
+          <pre><code>morning|Morning|morning.txt
+lunch|Lunch time|lunch.txt
+evening|Evening|evening.txt</code></pre>
+          <pre><code>Wie sagt man "Good morning" auf Deutsch?|Guten Morgen.
+Was isst du morgens?|Ich esse Brot.</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+  </body>
+</html>
