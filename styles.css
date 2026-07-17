@@ -259,6 +259,11 @@ button:disabled {
   opacity: 0.55;
 }
 
+.game-locked .setup-grid,
+.game-locked .player-name-fields {
+  opacity: 0.52;
+}
+
 .play-panel,
 .editor-panel,
 .format-panel,
@@ -385,9 +390,14 @@ input:focus {
 }
 
 .answer-text {
-  margin: 0;
+  margin: 10px 0 0;
   color: var(--muted);
   font-weight: 700;
+}
+
+.example-action {
+  min-height: 38px;
+  padding: 0 12px;
 }
 
 .score-buttons {

@@ -14,9 +14,11 @@
   const roundLabel = document.querySelector("#roundLabel");
   const categoryLabel = document.querySelector("#categoryLabel");
   const questionText = document.querySelector("#questionText");
+  const showExampleButton = document.querySelector("#showExampleButton");
   const answerText = document.querySelector("#answerText");
   const scoreboard = document.querySelector("#scoreboard");
   const scoreButtons = Array.from(document.querySelectorAll("[data-points]"));
+  const setupButtons = [newGameButton, resetScoresButton];
   const translations = {
     en: {
       navGame: "Game",
@@ -38,6 +40,7 @@
       round: "Round",
       question: "Question",
       scoreAnswer: "Score this answer",
+      showExample: "Show example",
       spinToChoose: "Spin to choose",
       intro: "Add players, choose the round count, then press Start.",
       noPlayers: "No players yet.",
@@ -72,6 +75,7 @@
       round: "Runde",
       question: "Frage",
       scoreAnswer: "Antwort bewerten",
+      showExample: "Beispiel zeigen",
       spinToChoose: "Drehen zum Auswählen",
       intro: "Spieler eintragen, Rundenzahl wählen und Start drücken.",
       noPlayers: "Noch keine Spieler.",
@@ -95,8 +99,10 @@
     currentRound: 0,
     roundLimit: 10,
     currentQuestion: null,
+    exampleVisible: false,
     rotation: 0,
     spinning: false,
+    gameStarted: false,
     gameOver: false,
     language: localStorage.getItem("roata-language") || "en",
     messageKey: "intro"
@@ -197,6 +203,7 @@
     state.currentRound = 0;
     state.roundLimit = Number(roundLimitInput.value);
     state.currentQuestion = null;
+    state.gameStarted = false;
     state.gameOver = false;
     setMessage("spinToChoose", "intro", "");
     renderStatus();
@@ -238,12 +245,23 @@
 
   function renderStatus() {
     const player = state.players[state.currentPlayerIndex];
+    const setupLocked = state.gameStarted && !state.gameOver;
     turnLabel.textContent = player ? player.name : "-";
     roundLabel.textContent = `${state.currentRound} / ${state.roundLimit}`;
     spinButton.disabled = state.spinning || state.gameOver || !state.players.length || !state.categories.length;
+    playerCountInput.disabled = setupLocked;
+    roundLimitInput.disabled = setupLocked;
+    playerNameFields.querySelectorAll("input").forEach((input) => {
+      input.disabled = setupLocked;
+    });
+    setupButtons.forEach((button) => {
+      button.disabled = setupLocked;
+    });
+    document.body.classList.toggle("game-locked", setupLocked);
     scoreButtons.forEach((button) => {
       button.disabled = !state.currentQuestion || state.spinning || state.gameOver;
     });
+    showExampleButton.disabled = !state.currentQuestion || !state.currentQuestion.question.answer || state.spinning || state.gameOver;
   }
 
   function renderScoreboard() {
@@ -269,13 +287,26 @@
     state.messageKey = "";
     categoryLabel.textContent = category;
     questionText.textContent = prompt;
-    answerText.textContent = answer ? `${t("suggestedAnswer")}: ${answer}` : "";
+    answerText.textContent = state.exampleVisible && answer ? `${t("suggestedAnswer")}: ${answer}` : "";
+  }
+
+  function speakQuestion(prompt) {
+    if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(prompt);
+    utterance.lang = "de-DE";
+    utterance.rate = 0.94;
+    window.speechSynthesis.speak(utterance);
   }
 
   function setMessage(categoryKey, promptKey, detail) {
     state.messageKey = promptKey;
     categoryLabel.textContent = t(categoryKey);
     questionText.textContent = detail ? `${detail} ${t(promptKey)}` : t(promptKey);
+    state.exampleVisible = false;
     answerText.textContent = "";
   }
 
@@ -302,7 +333,9 @@
     }
 
     state.spinning = true;
+    state.gameStarted = true;
     state.currentQuestion = null;
+    state.exampleVisible = false;
     setMessage("spinning", "getReady", "");
     renderStatus();
 
@@ -318,8 +351,10 @@
       const category = state.categories[categoryIndex];
       const question = category.questions[Math.floor(Math.random() * category.questions.length)];
       state.currentQuestion = { category, question };
+      state.exampleVisible = false;
       state.spinning = false;
       setQuestion(category.label, question.prompt, question.answer);
+      speakQuestion(question.prompt);
       renderStatus();
     }, 4900);
   }
@@ -333,6 +368,7 @@
     player.score += points;
     state.currentRound += 1;
     state.currentQuestion = null;
+    state.exampleVisible = false;
 
     if (state.currentRound >= state.roundLimit) {
       state.gameOver = true;
@@ -362,13 +398,28 @@
     state.currentRound = 0;
     state.currentPlayerIndex = 0;
     state.currentQuestion = null;
+    state.exampleVisible = false;
     state.gameOver = false;
+    state.gameStarted = false;
     setMessage("spinToChoose", "scoresReset", "");
     renderStatus();
     renderScoreboard();
   });
   scoreButtons.forEach((button) => {
     button.addEventListener("click", () => score(Number(button.dataset.points)));
+  });
+  showExampleButton.addEventListener("click", () => {
+    if (!state.currentQuestion) {
+      return;
+    }
+
+    state.exampleVisible = true;
+    setQuestion(
+      state.currentQuestion.category.label,
+      state.currentQuestion.question.prompt,
+      state.currentQuestion.question.answer
+    );
+    renderStatus();
   });
   languageSelect.addEventListener("change", () => {
     state.language = languageSelect.value;
