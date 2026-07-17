@@ -199,26 +199,23 @@ h1 {
 
 .wheel-label {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 46%;
-  transform-origin: 0 50%;
+  top: var(--y);
+  left: var(--x);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 23%;
+  min-height: 28px;
+  padding: 0 4px;
   color: white;
-  font-size: clamp(0.78rem, 1.55vw, 1rem);
+  font-size: clamp(0.56rem, 0.98vw, 0.76rem);
   font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.wheel-center {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+  overflow-wrap: anywhere;
+  transform: translate(-50%, -50%);
   pointer-events: none;
-}
-
-.wheel-center button {
-  pointer-events: auto;
 }
 
 .primary-action,
@@ -283,6 +280,12 @@ button:disabled {
   display: grid;
   grid-template-columns: 1fr 140px;
   gap: 12px;
+}
+
+.player-name-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
 label {
@@ -562,7 +565,8 @@ pre {
   }
 
   .setup-grid,
-  .status-strip {
+  .status-strip,
+  .player-name-fields {
     grid-template-columns: 1fr;
   }
 

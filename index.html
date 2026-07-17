@@ -35,19 +35,25 @@
         <div class="wheel-layout">
           <div class="wheel-wrap" aria-live="polite">
             <div class="pointer" aria-hidden="true"></div>
-            <div id="wheel" class="wheel" role="img" aria-label="Spinning category wheel">
-              <div class="wheel-center">
-                <button id="spinButton" class="primary-action" type="button" data-i18n="start">Start</button>
-              </div>
-            </div>
+            <div id="wheel" class="wheel" role="img" aria-label="Spinning category wheel"></div>
           </div>
 
           <aside class="play-panel" aria-label="Game controls">
             <div class="setup-grid">
               <label>
-                <span data-i18n="players">Players</span>
-                <textarea id="playersInput" rows="4" spellcheck="false">Player 1
-Player 2</textarea>
+                <span data-i18n="playerCount">Number of players</span>
+                <select id="playerCount">
+                  <option value="1">1</option>
+                  <option value="2" selected>2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
               </label>
               <label>
                 <span data-i18n="rounds">Rounds</span>
@@ -58,7 +64,9 @@ Player 2</textarea>
                 </select>
               </label>
             </div>
+            <div id="playerNameFields" class="player-name-fields"></div>
             <div class="button-row">
+              <button id="spinButton" class="primary-action" type="button" data-i18n="start">Start</button>
               <button id="newGameButton" class="secondary-action" type="button" data-i18n="newGame">New Game</button>
               <button id="resetScoresButton" class="ghost-action" type="button" data-i18n="resetScores">Reset Scores</button>
             </div>

@@ -6,7 +6,8 @@
   const spinButton = document.querySelector("#spinButton");
   const newGameButton = document.querySelector("#newGameButton");
   const resetScoresButton = document.querySelector("#resetScoresButton");
-  const playersInput = document.querySelector("#playersInput");
+  const playerCountInput = document.querySelector("#playerCount");
+  const playerNameFields = document.querySelector("#playerNameFields");
   const roundLimitInput = document.querySelector("#roundLimit");
   const languageSelect = document.querySelector("#languageSelect");
   const turnLabel = document.querySelector("#turnLabel");
@@ -25,6 +26,8 @@
       gameTitle: "Spin, answer, score, repeat.",
       start: "Start",
       players: "Players",
+      playerCount: "Number of players",
+      playerName: "Player",
       rounds: "Rounds",
       rounds10: "10 rounds",
       rounds20: "20 rounds",
@@ -57,6 +60,8 @@
       gameTitle: "Drehen, antworten, punkten.",
       start: "Start",
       players: "Spieler",
+      playerCount: "Anzahl der Spieler",
+      playerName: "Spieler",
       rounds: "Runden",
       rounds10: "10 Runden",
       rounds20: "20 Runden",
@@ -107,6 +112,7 @@
       element.textContent = t(element.dataset.i18n);
     });
     languageSelect.value = state.language;
+    updatePlayerNameLabels();
     refreshCurrentMessage();
   }
 
@@ -125,6 +131,39 @@
   function parseQuestionLine(line) {
     const [prompt, answer] = line.split("|").map((part) => part.trim());
     return prompt ? { prompt, answer: answer || "" } : null;
+  }
+
+  function readPlayerNames() {
+    return Array.from(playerNameFields.querySelectorAll("input"))
+      .map((input) => input.value.trim())
+      .filter(Boolean);
+  }
+
+  function updatePlayerNameLabels() {
+    playerNameFields.querySelectorAll("label").forEach((label, index) => {
+      const text = `${t("playerName")} ${index + 1}`;
+      label.querySelector("span").textContent = text;
+      label.querySelector("input").placeholder = text;
+    });
+  }
+
+  function renderPlayerNameFields() {
+    const existingNames = readPlayerNames();
+    const count = Number(playerCountInput.value);
+    playerNameFields.innerHTML = "";
+
+    for (let index = 0; index < count; index += 1) {
+      const label = document.createElement("label");
+      const name = existingNames[index] || `${t("playerName")} ${index + 1}`;
+      label.innerHTML = `
+        <span></span>
+        <input type="text" spellcheck="false" value="">
+      `;
+      label.querySelector("input").value = name;
+      playerNameFields.append(label);
+    }
+
+    updatePlayerNameLabels();
   }
 
   async function fetchText(path) {
@@ -152,7 +191,7 @@
   }
 
   function buildPlayers() {
-    const names = parseLines(playersInput.value);
+    const names = readPlayerNames();
     state.players = names.map((name) => ({ name, score: 0 }));
     state.currentPlayerIndex = 0;
     state.currentRound = 0;
@@ -189,7 +228,10 @@
       label.className = "wheel-label";
       label.textContent = category.label;
       const angle = index * step + step / 2;
-      label.style.transform = `rotate(${angle}deg) translate(18%, -50%) rotate(${angle > 90 && angle < 270 ? 180 : 0}deg)`;
+      const labelAngle = (angle - 90) * (Math.PI / 180);
+      const radius = 33;
+      label.style.setProperty("--x", `${50 + Math.cos(labelAngle) * radius}%`);
+      label.style.setProperty("--y", `${50 + Math.sin(labelAngle) * radius}%`);
       wheel.append(label);
     });
   }
@@ -308,6 +350,10 @@
   }
 
   spinButton.addEventListener("click", spin);
+  playerCountInput.addEventListener("change", () => {
+    renderPlayerNameFields();
+    buildPlayers();
+  });
   newGameButton.addEventListener("click", buildPlayers);
   resetScoresButton.addEventListener("click", () => {
     state.players.forEach((player) => {
@@ -330,6 +376,7 @@
     applyTranslations();
   });
 
+  renderPlayerNameFields();
   buildPlayers();
   applyTranslations();
   loadGameData()
