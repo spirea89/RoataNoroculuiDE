@@ -30,14 +30,14 @@
       players: "Players",
       playerCount: "Number of players",
       playerName: "Player",
-      rounds: "Rounds",
-      rounds10: "10 rounds",
-      rounds20: "20 rounds",
-      rounds30: "30 rounds",
+      rounds: "Spins per player",
+      rounds10: "10 spins each",
+      rounds20: "20 spins each",
+      rounds30: "30 spins each",
       newGame: "New Game",
       resetScores: "Reset Scores",
       turn: "Turn",
-      round: "Round",
+      round: "Spins",
       question: "Question",
       scoreAnswer: "Score this answer",
       showExample: "Show example",
@@ -65,14 +65,14 @@
       players: "Spieler",
       playerCount: "Anzahl der Spieler",
       playerName: "Spieler",
-      rounds: "Runden",
-      rounds10: "10 Runden",
-      rounds20: "20 Runden",
-      rounds30: "30 Runden",
+      rounds: "Drehungen pro Spieler",
+      rounds10: "10 Drehungen",
+      rounds20: "20 Drehungen",
+      rounds30: "30 Drehungen",
       newGame: "Neues Spiel",
       resetScores: "Punkte zurücksetzen",
       turn: "Am Zug",
-      round: "Runde",
+      round: "Drehungen",
       question: "Frage",
       scoreAnswer: "Antwort bewerten",
       showExample: "Beispiel zeigen",
@@ -198,7 +198,7 @@
 
   function buildPlayers() {
     const names = readPlayerNames();
-    state.players = names.map((name) => ({ name, score: 0 }));
+    state.players = names.map((name) => ({ name, score: 0, spins: 0 }));
     state.currentPlayerIndex = 0;
     state.currentRound = 0;
     state.roundLimit = Number(roundLimitInput.value);
@@ -260,7 +260,7 @@
     const player = state.players[state.currentPlayerIndex];
     const setupLocked = state.gameStarted && !state.gameOver;
     turnLabel.textContent = player ? player.name : "-";
-    roundLabel.textContent = `${state.currentRound} / ${state.roundLimit}`;
+    roundLabel.textContent = player ? `${player.spins} / ${state.roundLimit}` : `0 / ${state.roundLimit}`;
     spinButton.disabled = state.spinning || state.gameOver || !state.players.length || !state.categories.length;
     playerCountInput.disabled = setupLocked;
     roundLimitInput.disabled = setupLocked;
@@ -380,18 +380,21 @@
 
     const player = state.players[state.currentPlayerIndex];
     player.score += points;
+    player.spins += 1;
     state.currentRound += 1;
     state.currentQuestion = null;
     state.exampleVisible = false;
 
-    if (state.currentRound >= state.roundLimit) {
+    if (state.players.every((entry) => entry.spins >= state.roundLimit)) {
       state.gameOver = true;
       const winnerScore = Math.max(...state.players.map((entry) => entry.score));
       const winners = state.players.filter((entry) => entry.score === winnerScore).map((entry) => entry.name).join(", ");
       state.messageKey = "";
       setQuestion(t("gameOver"), `${winners} ${t("wonWith")} ${winnerScore} ${t("points")}.`, "");
     } else {
-      state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+      do {
+        state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+      } while (state.players[state.currentPlayerIndex].spins >= state.roundLimit);
       setMessage("nextTurn", "pressStart", `${state.players[state.currentPlayerIndex].name},`);
     }
 
@@ -408,6 +411,7 @@
   resetScoresButton.addEventListener("click", () => {
     state.players.forEach((player) => {
       player.score = 0;
+      player.spins = 0;
     });
     state.currentRound = 0;
     state.currentPlayerIndex = 0;
