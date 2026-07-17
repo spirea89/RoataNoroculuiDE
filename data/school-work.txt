@@ -1,0 +1,31 @@
+# Question|Suggested answer
+Gehst du zur Schule oder zur Arbeit?|Ich gehe zur Arbeit.
+Was ist dein Lieblingsfach?|Mein Lieblingsfach ist Mathematik.
+Welche Sprache lernst du?|Ich lerne Deutsch.
+Was machst du in der Pause?|Ich esse etwas und spreche mit Freunden.
+Wer ist dein Lieblingslehrer?|Meine Deutschlehrerin ist meine Lieblingslehrerin.
+Was liegt in deiner Schultasche?|Darin liegen Bücher und Stifte.
+Welche Aufgabe war heute leicht?|Die Rechenaufgabe war leicht.
+Welche Aufgabe war heute schwierig?|Die Schreibaufgabe war schwierig.
+Was hast du heute gelernt?|Ich habe neue Wörter gelernt.
+Machst du gern Hausaufgaben?|Manchmal mache ich sie gern.
+Wann beginnt deine Schule oder Arbeit?|Sie beginnt um acht Uhr.
+Wann endet dein Schultag oder Arbeitstag?|Er endet um vier Uhr.
+Wie kommst du zur Schule oder Arbeit?|Ich fahre mit dem Bus.
+Mit wem arbeitest oder lernst du gern?|Ich lerne gern mit meiner Freundin.
+Was brauchst du zum Lernen?|Ich brauche Ruhe und einen Stift.
+Was kannst du besonders gut?|Ich kann gut rechnen.
+Was möchtest du besser können?|Ich möchte besser Deutsch sprechen.
+Wie sieht dein Arbeitsplatz aus?|Er ist ordentlich und hell.
+Benutzt du einen Computer?|Ja, ich benutze jeden Tag einen Computer.
+Wie viele Pausen hast du?|Ich habe zwei Pausen.
+Was machst du, wenn du etwas nicht verstehst?|Ich frage nach Hilfe.
+Welche Note macht dich stolz?|Eine Eins macht mich stolz.
+Arbeitest du lieber allein oder im Team?|Ich arbeite lieber im Team.
+Was war heute interessant?|Der Deutschunterricht war interessant.
+Was war heute langweilig?|Die lange Besprechung war langweilig.
+Welche Aufgabe möchtest du morgen erledigen?|Ich möchte meine Hausaufgaben fertig machen.
+Wer hilft dir beim Lernen?|Meine Eltern helfen mir.
+Was möchtest du später beruflich machen?|Ich möchte Ärztin werden.
+Warum ist Lernen wichtig?|Lernen hilft uns, Neues zu verstehen.
+Beschreibe einen guten Schultag oder Arbeitstag.|Er ist interessant, ruhig und erfolgreich.
