@@ -2,3 +2,12 @@
 morning|Morning|morning.txt
 lunch|Lunch time|lunch.txt
 evening|Evening|evening.txt
+family|Family|family.txt
+home|Home|home.txt
+school-work|School & Work|school-work.txt
+hobbies|Hobbies|hobbies.txt
+travel|Travel|travel.txt
+shopping|Shopping|shopping.txt
+fun|Fun|fun.txt
+why|Why?|why.txt
+would-you|What would you...?|would-you.txt
