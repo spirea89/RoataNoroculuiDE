@@ -8,6 +8,7 @@
   const resetScoresButton = document.querySelector("#resetScoresButton");
   const playersInput = document.querySelector("#playersInput");
   const roundLimitInput = document.querySelector("#roundLimit");
+  const languageSelect = document.querySelector("#languageSelect");
   const turnLabel = document.querySelector("#turnLabel");
   const roundLabel = document.querySelector("#roundLabel");
   const categoryLabel = document.querySelector("#categoryLabel");
@@ -15,6 +16,72 @@
   const answerText = document.querySelector("#answerText");
   const scoreboard = document.querySelector("#scoreboard");
   const scoreButtons = Array.from(document.querySelectorAll("[data-points]"));
+  const translations = {
+    en: {
+      navGame: "Game",
+      navConfigure: "Configure",
+      languageLabel: "Language",
+      gameEyebrow: "German practice wheel",
+      gameTitle: "Spin, answer, score, repeat.",
+      start: "Start",
+      players: "Players",
+      rounds: "Rounds",
+      rounds10: "10 rounds",
+      rounds20: "20 rounds",
+      rounds30: "30 rounds",
+      newGame: "New Game",
+      resetScores: "Reset Scores",
+      turn: "Turn",
+      round: "Round",
+      question: "Question",
+      scoreAnswer: "Score this answer",
+      spinToChoose: "Spin to choose",
+      intro: "Add players, choose the round count, then press Start.",
+      noPlayers: "No players yet.",
+      suggestedAnswer: "Suggested answer",
+      spinning: "Spinning...",
+      getReady: "Get ready to answer in German.",
+      gameOver: "Game over",
+      wonWith: "won with",
+      points: "points",
+      nextTurn: "Next turn",
+      pressStart: "press Start.",
+      scoresReset: "Scores are reset. Press Start when ready.",
+      dataError: "Data error"
+    },
+    de: {
+      navGame: "Spiel",
+      navConfigure: "Konfigurieren",
+      languageLabel: "Sprache",
+      gameEyebrow: "Deutsch-Übungsrad",
+      gameTitle: "Drehen, antworten, punkten.",
+      start: "Start",
+      players: "Spieler",
+      rounds: "Runden",
+      rounds10: "10 Runden",
+      rounds20: "20 Runden",
+      rounds30: "30 Runden",
+      newGame: "Neues Spiel",
+      resetScores: "Punkte zurücksetzen",
+      turn: "Am Zug",
+      round: "Runde",
+      question: "Frage",
+      scoreAnswer: "Antwort bewerten",
+      spinToChoose: "Drehen zum Auswählen",
+      intro: "Spieler eintragen, Rundenzahl wählen und Start drücken.",
+      noPlayers: "Noch keine Spieler.",
+      suggestedAnswer: "Mögliche Antwort",
+      spinning: "Das Rad dreht...",
+      getReady: "Mach dich bereit, auf Deutsch zu antworten.",
+      gameOver: "Spiel beendet",
+      wonWith: "gewinnt mit",
+      points: "Punkten",
+      nextTurn: "Nächster Zug",
+      pressStart: "drücke Start.",
+      scoresReset: "Punkte sind zurückgesetzt. Drücke Start, wenn du bereit bist.",
+      dataError: "Datenfehler"
+    }
+  };
 
   const state = {
     categories: [],
@@ -25,8 +92,23 @@
     currentQuestion: null,
     rotation: 0,
     spinning: false,
-    gameOver: false
+    gameOver: false,
+    language: localStorage.getItem("roata-language") || "en",
+    messageKey: "intro"
   };
+
+  function t(key) {
+    return translations[state.language][key] || translations.en[key] || key;
+  }
+
+  function applyTranslations() {
+    document.documentElement.lang = state.language;
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      element.textContent = t(element.dataset.i18n);
+    });
+    languageSelect.value = state.language;
+    refreshCurrentMessage();
+  }
 
   function parseLines(text) {
     return text
@@ -77,7 +159,7 @@
     state.roundLimit = Number(roundLimitInput.value);
     state.currentQuestion = null;
     state.gameOver = false;
-    setQuestion("Spin to choose", "Add players, choose the round count, then press Start.", "");
+    setMessage("spinToChoose", "intro", "");
     renderStatus();
     renderScoreboard();
   }
@@ -125,7 +207,7 @@
   function renderScoreboard() {
     scoreboard.innerHTML = "";
     if (!state.players.length) {
-      scoreboard.innerHTML = "<p class=\"note\">No players yet.</p>";
+      scoreboard.innerHTML = `<p class="note">${t("noPlayers")}</p>`;
       return;
     }
 
@@ -142,9 +224,34 @@
   }
 
   function setQuestion(category, prompt, answer) {
+    state.messageKey = "";
     categoryLabel.textContent = category;
     questionText.textContent = prompt;
-    answerText.textContent = answer ? `Suggested answer: ${answer}` : "";
+    answerText.textContent = answer ? `${t("suggestedAnswer")}: ${answer}` : "";
+  }
+
+  function setMessage(categoryKey, promptKey, detail) {
+    state.messageKey = promptKey;
+    categoryLabel.textContent = t(categoryKey);
+    questionText.textContent = detail ? `${detail} ${t(promptKey)}` : t(promptKey);
+    answerText.textContent = "";
+  }
+
+  function refreshCurrentMessage() {
+    if (state.currentQuestion) {
+      const { category, question } = state.currentQuestion;
+      setQuestion(category.label, question.prompt, question.answer);
+    } else if (state.messageKey === "intro") {
+      setMessage("spinToChoose", "intro", "");
+    } else if (state.messageKey === "getReady") {
+      setMessage("spinning", "getReady", "");
+    } else if (state.messageKey === "scoresReset") {
+      setMessage("spinToChoose", "scoresReset", "");
+    } else if (state.messageKey === "pressStart") {
+      const player = state.players[state.currentPlayerIndex];
+      setMessage("nextTurn", "pressStart", player ? `${player.name},` : "");
+    }
+    renderScoreboard();
   }
 
   function spin() {
@@ -154,7 +261,7 @@
 
     state.spinning = true;
     state.currentQuestion = null;
-    setQuestion("Spinning...", "Get ready to answer in German.", "");
+    setMessage("spinning", "getReady", "");
     renderStatus();
 
     const categoryIndex = Math.floor(Math.random() * state.categories.length);
@@ -189,10 +296,11 @@
       state.gameOver = true;
       const winnerScore = Math.max(...state.players.map((entry) => entry.score));
       const winners = state.players.filter((entry) => entry.score === winnerScore).map((entry) => entry.name).join(", ");
-      setQuestion("Game over", `${winners} won with ${winnerScore} points.`, "");
+      state.messageKey = "";
+      setQuestion(t("gameOver"), `${winners} ${t("wonWith")} ${winnerScore} ${t("points")}.`, "");
     } else {
       state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
-      setQuestion("Next turn", `${state.players[state.currentPlayerIndex].name}, press Start.`, "");
+      setMessage("nextTurn", "pressStart", `${state.players[state.currentPlayerIndex].name},`);
     }
 
     renderStatus();
@@ -209,19 +317,25 @@
     state.currentPlayerIndex = 0;
     state.currentQuestion = null;
     state.gameOver = false;
-    setQuestion("Spin to choose", "Scores are reset. Press Start when ready.", "");
+    setMessage("spinToChoose", "scoresReset", "");
     renderStatus();
     renderScoreboard();
   });
   scoreButtons.forEach((button) => {
     button.addEventListener("click", () => score(Number(button.dataset.points)));
   });
+  languageSelect.addEventListener("change", () => {
+    state.language = languageSelect.value;
+    localStorage.setItem("roata-language", state.language);
+    applyTranslations();
+  });
 
   buildPlayers();
+  applyTranslations();
   loadGameData()
     .then(renderStatus)
     .catch((error) => {
-      setQuestion("Data error", error.message, "");
+      setQuestion(t("dataError"), error.message, "");
       renderStatus();
     });
 })();

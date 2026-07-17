@@ -35,4 +35,10 @@ Open `http://localhost:5173`.
 
 ## Publish With GitHub Pages
 
-In GitHub, open the repository settings, go to **Pages**, choose **Deploy from a branch**, then select `main` and `/root`.
+This repo includes `.github/workflows/pages.yml`. Every push to `main` publishes the static site with GitHub Pages.
+
+Expected site URL:
+
+```txt
+https://spirea89.github.io/RoataNoroculuiDE/
+```

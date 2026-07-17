@@ -13,53 +13,60 @@
         <span>Roata Norocului</span>
       </a>
       <nav class="nav">
-        <a href="index.html">Game</a>
-        <a aria-current="page" href="config.html">Configure</a>
+        <a data-i18n="navGame" href="index.html">Game</a>
+        <a data-i18n="navConfigure" aria-current="page" href="config.html">Configure</a>
+        <label class="language-switch">
+          <span data-i18n="languageLabel">Language</span>
+          <select id="languageSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </label>
       </nav>
     </header>
 
     <main class="config-shell">
       <section class="config-heading">
-        <p class="eyebrow">Content editor</p>
-        <h1>Configure categories and German questions.</h1>
+        <p class="eyebrow" data-i18n="configEyebrow">Content editor</p>
+        <h1 data-i18n="configTitle">Configure categories and German questions.</h1>
       </section>
 
       <section class="editor-grid">
         <div class="editor-panel">
           <div class="panel-heading">
-            <h2>Categories</h2>
-            <button id="addCategoryButton" class="secondary-action" type="button">Add Category</button>
+            <h2 data-i18n="categories">Categories</h2>
+            <button id="addCategoryButton" class="secondary-action" type="button" data-i18n="addCategory">Add Category</button>
           </div>
           <div class="field-row-head" aria-hidden="true">
-            <span>ID</span>
-            <span>Wheel label</span>
-            <span>Question file</span>
+            <span data-i18n="categoryId">ID</span>
+            <span data-i18n="wheelLabel">Wheel label</span>
+            <span data-i18n="questionFile">Question file</span>
           </div>
           <div id="categoryRows" class="category-rows"></div>
           <div class="button-row">
-            <button id="downloadCategoriesButton" class="primary-action compact" type="button">Download categories.txt</button>
+            <button id="downloadCategoriesButton" class="primary-action compact" type="button" data-i18n="downloadCategories">Download categories.txt</button>
           </div>
         </div>
 
         <div class="editor-panel">
           <div class="panel-heading">
-            <h2>Questions</h2>
+            <h2 data-i18n="questions">Questions</h2>
             <select id="questionFileSelect" aria-label="Question file"></select>
           </div>
           <label>
-            Questions and suggested answers
+            <span data-i18n="questionsAndAnswers">Questions and suggested answers</span>
             <textarea id="questionsEditor" class="questions-editor" spellcheck="false"></textarea>
           </label>
           <div class="button-row">
-            <button id="downloadQuestionsButton" class="primary-action compact" type="button">Download question file</button>
-            <button id="reloadButton" class="ghost-action" type="button">Reload from txt</button>
+            <button id="downloadQuestionsButton" class="primary-action compact" type="button" data-i18n="downloadQuestionFile">Download question file</button>
+            <button id="reloadButton" class="ghost-action" type="button" data-i18n="reloadTxt">Reload from txt</button>
           </div>
-          <p class="note">Static GitHub Pages cannot save into the repository directly. Download the changed txt file, replace it in `data/`, commit, and GitHub Pages will serve it.</p>
+          <p class="note" data-i18n="staticNote">Static GitHub Pages cannot save into the repository directly. Download the changed txt file, replace it in `data/`, commit, and GitHub Pages will serve it.</p>
         </div>
       </section>
 
       <section class="format-panel">
-        <h2>Text file format</h2>
+        <h2 data-i18n="fileFormat">Text file format</h2>
         <div class="format-grid">
           <pre><code>morning|Morning|morning.txt
 lunch|Lunch time|lunch.txt

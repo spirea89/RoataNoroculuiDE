@@ -13,16 +13,23 @@
         <span>Roata Norocului</span>
       </a>
       <nav class="nav">
-        <a aria-current="page" href="index.html">Game</a>
-        <a href="config.html">Configure</a>
+        <a data-i18n="navGame" aria-current="page" href="index.html">Game</a>
+        <a data-i18n="navConfigure" href="config.html">Configure</a>
+        <label class="language-switch">
+          <span data-i18n="languageLabel">Language</span>
+          <select id="languageSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </label>
       </nav>
     </header>
 
     <main class="game-shell">
       <section class="stage" aria-labelledby="game-title">
         <div class="stage-copy">
-          <p class="eyebrow">German practice wheel</p>
-          <h1 id="game-title">Spin, answer, score, repeat.</h1>
+          <p class="eyebrow" data-i18n="gameEyebrow">German practice wheel</p>
+          <h1 id="game-title" data-i18n="gameTitle">Spin, answer, score, repeat.</h1>
         </div>
 
         <div class="wheel-layout">
@@ -30,7 +37,7 @@
             <div class="pointer" aria-hidden="true"></div>
             <div id="wheel" class="wheel" role="img" aria-label="Spinning category wheel">
               <div class="wheel-center">
-                <button id="spinButton" class="primary-action" type="button">Start</button>
+                <button id="spinButton" class="primary-action" type="button" data-i18n="start">Start</button>
               </div>
             </div>
           </div>
@@ -38,44 +45,44 @@
           <aside class="play-panel" aria-label="Game controls">
             <div class="setup-grid">
               <label>
-                Players
+                <span data-i18n="players">Players</span>
                 <textarea id="playersInput" rows="4" spellcheck="false">Player 1
 Player 2</textarea>
               </label>
               <label>
-                Rounds
+                <span data-i18n="rounds">Rounds</span>
                 <select id="roundLimit">
-                  <option value="10">10 rounds</option>
-                  <option value="20">20 rounds</option>
-                  <option value="30">30 rounds</option>
+                  <option value="10" data-i18n="rounds10">10 rounds</option>
+                  <option value="20" data-i18n="rounds20">20 rounds</option>
+                  <option value="30" data-i18n="rounds30">30 rounds</option>
                 </select>
               </label>
             </div>
             <div class="button-row">
-              <button id="newGameButton" class="secondary-action" type="button">New Game</button>
-              <button id="resetScoresButton" class="ghost-action" type="button">Reset Scores</button>
+              <button id="newGameButton" class="secondary-action" type="button" data-i18n="newGame">New Game</button>
+              <button id="resetScoresButton" class="ghost-action" type="button" data-i18n="resetScores">Reset Scores</button>
             </div>
 
             <div class="status-strip">
               <div>
-                <span>Turn</span>
+                <span data-i18n="turn">Turn</span>
                 <strong id="turnLabel">-</strong>
               </div>
               <div>
-                <span>Round</span>
+                <span data-i18n="round">Round</span>
                 <strong id="roundLabel">0 / 10</strong>
               </div>
             </div>
 
             <section class="question-box" aria-labelledby="question-title">
               <p id="categoryLabel" class="category-pill">Spin to choose</p>
-              <h2 id="question-title">Question</h2>
+              <h2 id="question-title" data-i18n="question">Question</h2>
               <p id="questionText">Add players, choose the round count, then press Start.</p>
               <p id="answerText" class="answer-text"></p>
             </section>
 
             <section aria-labelledby="score-title">
-              <h2 id="score-title" class="compact-title">Score this answer</h2>
+              <h2 id="score-title" class="compact-title" data-i18n="scoreAnswer">Score this answer</h2>
               <div class="score-buttons">
                 <button type="button" data-points="0">0</button>
                 <button type="button" data-points="10">10</button>
@@ -88,7 +95,7 @@ Player 2</textarea>
       </section>
 
       <section class="scoreboard-section" aria-labelledby="leaderboard-title">
-        <h2 id="leaderboard-title">Players</h2>
+        <h2 id="leaderboard-title" data-i18n="players">Players</h2>
         <div id="scoreboard" class="scoreboard"></div>
       </section>
     </main>

@@ -8,11 +8,67 @@
   const questionsEditor = document.querySelector("#questionsEditor");
   const downloadQuestionsButton = document.querySelector("#downloadQuestionsButton");
   const reloadButton = document.querySelector("#reloadButton");
+  const languageSelect = document.querySelector("#languageSelect");
+  const translations = {
+    en: {
+      navGame: "Game",
+      navConfigure: "Configure",
+      languageLabel: "Language",
+      configEyebrow: "Content editor",
+      configTitle: "Configure categories and German questions.",
+      categories: "Categories",
+      addCategory: "Add Category",
+      categoryId: "ID",
+      wheelLabel: "Wheel label",
+      questionFile: "Question file",
+      downloadCategories: "Download categories.txt",
+      questions: "Questions",
+      questionsAndAnswers: "Questions and suggested answers",
+      downloadQuestionFile: "Download question file",
+      reloadTxt: "Reload from txt",
+      staticNote: "Static GitHub Pages cannot save into the repository directly. Download the changed txt file, replace it in data/, commit, and GitHub Pages will serve it.",
+      fileFormat: "Text file format",
+      newQuestionFile: "New question file"
+    },
+    de: {
+      navGame: "Spiel",
+      navConfigure: "Konfigurieren",
+      languageLabel: "Sprache",
+      configEyebrow: "Inhalte bearbeiten",
+      configTitle: "Kategorien und Deutschfragen konfigurieren.",
+      categories: "Kategorien",
+      addCategory: "Kategorie hinzufügen",
+      categoryId: "ID",
+      wheelLabel: "Rad-Beschriftung",
+      questionFile: "Fragedatei",
+      downloadCategories: "categories.txt herunterladen",
+      questions: "Fragen",
+      questionsAndAnswers: "Fragen und mögliche Antworten",
+      downloadQuestionFile: "Fragedatei herunterladen",
+      reloadTxt: "Aus txt neu laden",
+      staticNote: "Statische GitHub Pages können nicht direkt ins Repository speichern. Lade die geänderte txt-Datei herunter, ersetze sie in data/, committe sie, und GitHub Pages stellt sie bereit.",
+      fileFormat: "Textdatei-Format",
+      newQuestionFile: "Neue Fragedatei"
+    }
+  };
 
   const state = {
     categories: [],
-    questionFiles: new Map()
+    questionFiles: new Map(),
+    language: localStorage.getItem("roata-language") || "en"
   };
+
+  function t(key) {
+    return translations[state.language][key] || translations.en[key] || key;
+  }
+
+  function applyTranslations() {
+    document.documentElement.lang = state.language;
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      element.textContent = t(element.dataset.i18n);
+    });
+    languageSelect.value = state.language;
+  }
 
   function parseLines(text) {
     return text
@@ -117,7 +173,7 @@
       try {
         state.questionFiles.set(file, await fetchText(`data/${file}`));
       } catch (error) {
-        state.questionFiles.set(file, `# New question file: ${file}\n`);
+        state.questionFiles.set(file, `# ${t("newQuestionFile")}: ${file}\n`);
       }
     }
     questionsEditor.value = state.questionFiles.get(file);
@@ -153,7 +209,13 @@
     downloadText(file, questionsEditor.value.endsWith("\n") ? questionsEditor.value : `${questionsEditor.value}\n`);
   });
   reloadButton.addEventListener("click", loadAll);
+  languageSelect.addEventListener("change", () => {
+    state.language = languageSelect.value;
+    localStorage.setItem("roata-language", state.language);
+    applyTranslations();
+  });
 
+  applyTranslations();
   loadAll().catch((error) => {
     categoryRows.innerHTML = `<p class="note">${error.message}</p>`;
   });
