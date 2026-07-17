@@ -241,6 +241,19 @@
       label.style.setProperty("--y", `${50 + Math.sin(labelAngle) * radius}%`);
       wheel.append(label);
     });
+    updateWheelLabelOrientation();
+  }
+
+  function normalizeDegrees(value) {
+    return ((value % 360) + 360) % 360;
+  }
+
+  function updateWheelLabelOrientation() {
+    const wheelAngle = normalizeDegrees(state.rotation);
+    const shouldFlip = wheelAngle > 90 && wheelAngle < 270;
+    wheel.querySelectorAll(".wheel-label").forEach((label) => {
+      label.style.setProperty("--label-turn", shouldFlip ? "180deg" : "0deg");
+    });
   }
 
   function renderStatus() {
@@ -345,6 +358,7 @@
     const pointerAngle = 270;
     const extraTurns = 5 + Math.floor(Math.random() * 3);
     state.rotation += extraTurns * 360 + pointerAngle - targetMiddle;
+    updateWheelLabelOrientation();
     wheel.style.transform = `rotate(${state.rotation}deg)`;
 
     window.setTimeout(() => {
