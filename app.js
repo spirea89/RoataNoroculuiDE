@@ -17,6 +17,10 @@
   const showExampleButton = document.querySelector("#showExampleButton");
   const answerText = document.querySelector("#answerText");
   const scoreboard = document.querySelector("#scoreboard");
+  const celebrationOverlay = document.querySelector("#celebrationOverlay");
+  const winnerTitle = document.querySelector("#winnerTitle");
+  const winnerSubtitle = document.querySelector("#winnerSubtitle");
+  const closeCelebrationButton = document.querySelector("#closeCelebrationButton");
   const scoreButtons = Array.from(document.querySelectorAll("[data-points]"));
   const setupButtons = [newGameButton, resetScoresButton];
   const translations = {
@@ -29,6 +33,7 @@
       start: "Start",
       players: "Players",
       playerCount: "Number of players",
+      playerNames: "Player names",
       playerName: "Player",
       rounds: "Spins per player",
       rounds10: "10 spins each",
@@ -53,7 +58,10 @@
       nextTurn: "Next turn",
       pressStart: "press Start.",
       scoresReset: "Scores are reset. Press Start when ready.",
-      dataError: "Data error"
+      dataError: "Data error",
+      winnerEyebrow: "Winner",
+      winnerSubtitle: "finished with",
+      closeCelebration: "Close"
     },
     de: {
       navGame: "Spiel",
@@ -64,6 +72,7 @@
       start: "Start",
       players: "Spieler",
       playerCount: "Anzahl der Spieler",
+      playerNames: "Spielernamen",
       playerName: "Spieler",
       rounds: "Drehungen pro Spieler",
       rounds10: "10 Drehungen",
@@ -88,7 +97,10 @@
       nextTurn: "Nächster Zug",
       pressStart: "drücke Start.",
       scoresReset: "Punkte sind zurückgesetzt. Drücke Start, wenn du bereit bist.",
-      dataError: "Datenfehler"
+      dataError: "Datenfehler",
+      winnerEyebrow: "Gewinner",
+      winnerSubtitle: "endet mit",
+      closeCelebration: "Schließen"
     }
   };
 
@@ -142,8 +154,7 @@
 
   function readPlayerNames() {
     return Array.from(playerNameFields.querySelectorAll("input"))
-      .map((input) => input.value.trim())
-      .filter(Boolean);
+      .map((input, index) => input.value.trim() || `${t("playerName")} ${index + 1}`);
   }
 
   function updatePlayerNameLabels() {
@@ -213,6 +224,7 @@
     state.currentQuestion = null;
     state.gameStarted = false;
     state.gameOver = false;
+    hideWinnerCelebration();
     setMessage("spinToChoose", "intro", "");
     renderStatus();
     renderScoreboard();
@@ -331,6 +343,18 @@
     window.speechSynthesis.speak(utterance);
   }
 
+  function showWinnerCelebration(winners, score) {
+    winnerTitle.textContent = winners;
+    winnerSubtitle.textContent = `${t("winnerSubtitle")} ${score} ${t("points")}.`;
+    celebrationOverlay.setAttribute("aria-hidden", "false");
+    document.body.classList.add("celebrating");
+  }
+
+  function hideWinnerCelebration() {
+    celebrationOverlay.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("celebrating");
+  }
+
   function setMessage(categoryKey, promptKey, detail) {
     state.messageKey = promptKey;
     categoryLabel.textContent = t(categoryKey);
@@ -357,6 +381,10 @@
   }
 
   function spin() {
+    if (!state.gameStarted) {
+      buildPlayers();
+    }
+
     if (state.spinning || state.gameOver || !state.players.length || !state.categories.length) {
       return;
     }
@@ -407,6 +435,7 @@
       const winners = state.players.filter((entry) => entry.score === winnerScore).map((entry) => entry.name).join(", ");
       state.messageKey = "";
       setQuestion(t("gameOver"), `${winners} ${t("wonWith")} ${winnerScore} ${t("points")}.`, "");
+      showWinnerCelebration(winners, winnerScore);
     } else {
       do {
         state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
@@ -436,6 +465,7 @@
     state.exampleVisible = false;
     state.gameOver = false;
     state.gameStarted = false;
+    hideWinnerCelebration();
     setMessage("spinToChoose", "scoresReset", "");
     renderStatus();
     renderScoreboard();
@@ -456,6 +486,7 @@
     );
     renderStatus();
   });
+  closeCelebrationButton.addEventListener("click", hideWinnerCelebration);
   languageSelect.addEventListener("change", () => {
     state.language = languageSelect.value;
     localStorage.setItem("roata-language", state.language);

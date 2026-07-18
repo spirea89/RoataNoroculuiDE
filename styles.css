@@ -293,6 +293,14 @@ button:disabled {
   gap: 10px;
 }
 
+.player-names-heading {
+  margin: -4px 0 -8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 label {
   display: grid;
   gap: 7px;
@@ -419,6 +427,116 @@ input:focus {
 
 .scoreboard-section {
   padding: 18px;
+}
+
+.celebration-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(23, 32, 42, 0.56);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.celebration-overlay[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.winner-dialog {
+  position: relative;
+  z-index: 2;
+  width: min(480px, 100%);
+  padding: 28px;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.winner-dialog h2 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 1;
+}
+
+.winner-dialog p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.fireworks {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.fireworks span {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow:
+    0 -58px 0 var(--gold),
+    42px -42px 0 var(--accent),
+    58px 0 0 var(--blue),
+    42px 42px 0 var(--green),
+    0 58px 0 #ffffff,
+    -42px 42px 0 var(--gold),
+    -58px 0 0 var(--accent),
+    -42px -42px 0 var(--blue);
+  animation: firework 1.25s ease-out infinite;
+}
+
+.fireworks span:nth-child(1) {
+  top: 24%;
+  left: 18%;
+}
+
+.fireworks span:nth-child(2) {
+  top: 30%;
+  right: 20%;
+  animation-delay: 180ms;
+}
+
+.fireworks span:nth-child(3) {
+  bottom: 24%;
+  left: 28%;
+  animation-delay: 360ms;
+}
+
+.fireworks span:nth-child(4) {
+  right: 28%;
+  bottom: 20%;
+  animation-delay: 540ms;
+}
+
+.fireworks span:nth-child(5) {
+  top: 16%;
+  left: 50%;
+  animation-delay: 720ms;
+}
+
+@keyframes firework {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
 }
 
 .scoreboard {

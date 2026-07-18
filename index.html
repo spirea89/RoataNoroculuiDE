@@ -64,6 +64,7 @@
                 </select>
               </label>
             </div>
+            <p class="player-names-heading" data-i18n="playerNames">Player names</p>
             <div id="playerNameFields" class="player-name-fields"></div>
             <div class="button-row">
               <button id="spinButton" class="primary-action" type="button" data-i18n="start">Start</button>
@@ -108,6 +109,22 @@
         <div id="scoreboard" class="scoreboard"></div>
       </section>
     </main>
+
+    <div id="celebrationOverlay" class="celebration-overlay" aria-hidden="true">
+      <div class="fireworks" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <section class="winner-dialog" role="dialog" aria-labelledby="winnerTitle" aria-modal="true">
+        <p class="eyebrow" data-i18n="winnerEyebrow">Winner</p>
+        <h2 id="winnerTitle"></h2>
+        <p id="winnerSubtitle"></p>
+        <button id="closeCelebrationButton" class="primary-action" type="button" data-i18n="closeCelebration">Close</button>
+      </section>
+    </div>
 
     <script src="app.js"></script>
   </body>
