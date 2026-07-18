@@ -95,6 +95,7 @@
   const state = {
     categories: [],
     players: [],
+    askedQuestionKeys: new Set(),
     currentPlayerIndex: 0,
     currentRound: 0,
     roundLimit: 10,
@@ -188,7 +189,13 @@
         const questionTextFile = await fetchText(`data/${category.file}`);
         return {
           ...category,
-          questions: parseLines(questionTextFile).map(parseQuestionLine).filter(Boolean)
+          questions: parseLines(questionTextFile)
+            .map(parseQuestionLine)
+            .filter(Boolean)
+            .map((question, index) => ({
+              ...question,
+              key: `${category.id}:${index}`
+            }))
         };
       })
     );
@@ -202,6 +209,7 @@
     state.currentPlayerIndex = 0;
     state.currentRound = 0;
     state.roundLimit = Number(roundLimitInput.value);
+    state.askedQuestionKeys.clear();
     state.currentQuestion = null;
     state.gameStarted = false;
     state.gameOver = false;
@@ -254,6 +262,14 @@
     wheel.querySelectorAll(".wheel-label").forEach((label) => {
       label.style.setProperty("--label-turn", shouldFlip ? "180deg" : "0deg");
     });
+  }
+
+  function pickQuestion(category) {
+    const availableQuestions = category.questions.filter((question) => !state.askedQuestionKeys.has(question.key));
+    const questionPool = availableQuestions.length ? availableQuestions : category.questions;
+    const question = questionPool[Math.floor(Math.random() * questionPool.length)];
+    state.askedQuestionKeys.add(question.key);
+    return question;
   }
 
   function renderStatus() {
@@ -363,7 +379,7 @@
 
     window.setTimeout(() => {
       const category = state.categories[categoryIndex];
-      const question = category.questions[Math.floor(Math.random() * category.questions.length)];
+      const question = pickQuestion(category);
       state.currentQuestion = { category, question };
       state.exampleVisible = false;
       state.spinning = false;
@@ -415,6 +431,7 @@
     });
     state.currentRound = 0;
     state.currentPlayerIndex = 0;
+    state.askedQuestionKeys.clear();
     state.currentQuestion = null;
     state.exampleVisible = false;
     state.gameOver = false;
