@@ -289,7 +289,7 @@
     const setupLocked = state.gameStarted && !state.gameOver;
     turnLabel.textContent = player ? player.name : "-";
     roundLabel.textContent = player ? `${player.spins} / ${state.roundLimit}` : `0 / ${state.roundLimit}`;
-    spinButton.disabled = state.spinning || state.gameOver || !state.players.length || !state.categories.length;
+    spinButton.disabled = Boolean(state.currentQuestion) || state.spinning || state.gameOver || !state.players.length || !state.categories.length;
     playerCountInput.disabled = setupLocked;
     roundLimitInput.disabled = setupLocked;
     playerNameFields.querySelectorAll("input").forEach((input) => {
@@ -385,7 +385,7 @@
       buildPlayers();
     }
 
-    if (state.spinning || state.gameOver || !state.players.length || !state.categories.length) {
+    if (state.currentQuestion || state.spinning || state.gameOver || !state.players.length || !state.categories.length) {
       return;
     }
 
