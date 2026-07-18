@@ -83,7 +83,7 @@
   }
 
   async function fetchText(path) {
-    const response = await fetch(path, { cache: "no-store" });
+    const response = await fetch(path);
     if (!response.ok) {
       throw new Error(`Could not load ${path}`);
     }
