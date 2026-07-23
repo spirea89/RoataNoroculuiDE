@@ -403,7 +403,13 @@ input:focus {
   font-weight: 700;
 }
 
-.example-action {
+.question-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.question-action {
   min-height: 38px;
   padding: 0 12px;
 }

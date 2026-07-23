@@ -14,6 +14,7 @@
   const roundLabel = document.querySelector("#roundLabel");
   const categoryLabel = document.querySelector("#categoryLabel");
   const questionText = document.querySelector("#questionText");
+  const replayQuestionButton = document.querySelector("#replayQuestionButton");
   const showExampleButton = document.querySelector("#showExampleButton");
   const answerText = document.querySelector("#answerText");
   const scoreboard = document.querySelector("#scoreboard");
@@ -46,6 +47,7 @@
       round: "Spins",
       question: "Question",
       scoreAnswer: "Score this answer",
+      replayQuestion: "Play question again",
       showExample: "Show example",
       spinToChoose: "Spin to choose",
       intro: "Add players, choose the round count, then press Start.",
@@ -86,6 +88,7 @@
       round: "Drehungen",
       question: "Frage",
       scoreAnswer: "Antwort bewerten",
+      replayQuestion: "Frage erneut abspielen",
       showExample: "Beispiel zeigen",
       spinToChoose: "Drehen zum Auswählen",
       intro: "Spieler eintragen, Rundenzahl wählen und Start drücken.",
@@ -304,6 +307,7 @@
     scoreButtons.forEach((button) => {
       button.disabled = !state.currentQuestion || state.spinning || state.gameOver;
     });
+    replayQuestionButton.disabled = !state.currentQuestion || state.spinning || state.gameOver;
     showExampleButton.disabled = !state.currentQuestion || !state.currentQuestion.question.answer || state.spinning || state.gameOver;
   }
 
@@ -401,9 +405,12 @@
     const categoryIndex = Math.floor(Math.random() * state.categories.length);
     const step = 360 / state.categories.length;
     const targetMiddle = categoryIndex * step + step / 2;
-    const pointerAngle = 270;
+    const pointerAngle = 0;
     const extraTurns = 5 + Math.floor(Math.random() * 3);
-    state.rotation += extraTurns * 360 + pointerAngle - targetMiddle;
+    const currentRotation = normalizeDegrees(state.rotation);
+    const targetRotation = normalizeDegrees(pointerAngle - targetMiddle);
+    const spinDelta = extraTurns * 360 + normalizeDegrees(targetRotation - currentRotation);
+    state.rotation += spinDelta;
     updateWheelLabelOrientation();
     wheel.style.transform = `rotate(${state.rotation}deg)`;
 
@@ -474,6 +481,13 @@
   });
   scoreButtons.forEach((button) => {
     button.addEventListener("click", () => score(Number(button.dataset.points)));
+  });
+  replayQuestionButton.addEventListener("click", () => {
+    if (!state.currentQuestion || state.spinning || state.gameOver) {
+      return;
+    }
+
+    speakQuestion(state.currentQuestion.question.prompt);
   });
   showExampleButton.addEventListener("click", () => {
     if (!state.currentQuestion) {
